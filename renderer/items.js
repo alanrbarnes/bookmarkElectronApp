@@ -1,5 +1,18 @@
+//Modules
+const fs = require('fs');
+
 //Dom nodes
 let items = document.getElementById("items");
+
+//Get readerJS content
+let readerJS
+fs.readFile(`${__dirname}/reader.js`, 'utf8', (err, data) => {
+    if (err) {
+        console.error('Error reading reader.js:', err);
+        return;
+    }
+    readerJS = data.toString();
+});
 
 ///Track items in storage
 exports.storage = JSON.parse(localStorage.getItem('readit-items')) || [];
@@ -47,6 +60,22 @@ exports.open = () => {
     //Get items url
     let contentURL = selectedItem.dataset.url
     console.log('Opening item: ', contentURL);
+
+    //Open item in proxy Browser window
+    // let readerWin = window.open(contentURL, '_blank');  //new
+    let readerWin = window.open(contentURL, '', `
+        maxWidth = 2000,
+        maxHeight = 2000,
+        width= 1200,
+        height= 800,
+        backgroundColor=#DEDEDE,
+        nodeIntegration = 0,  //node will not be available in the new window
+        contextIsolation = 1, //javascript will not have access to the origional window
+    `);
+
+    //Inject JavaScript
+    // readerWin.eval(`alert('Hello from items.js!')`);
+    readerWin.eval(readerJS);
 }
 
 //Add new item
