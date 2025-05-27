@@ -5,8 +5,11 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "watch": "nodemon --exec electron .",
-    "reset": "git reset --hard"
+    "watch": "nodemon --exec \"taskkill /IM electron.exe /F & electron .\" main.js",
+    "dev": "nodemon --exec \"taskkill /IM electron.exe /F & electron .\" main.js",
+    "reset": "git reset --hard",
+    "debug": "electron --remote-debugging-port=9222 .",
+    "nodeDebug": "electron --inspect=9229 ."
   },
   "repository": "https://github.com/stackacademytv/master-electron",
   "keywords": [
@@ -22,5 +25,9 @@
   },
   "dependencies": {
     "electron-window-state": "^5.0.3"
+  },
+  "config": {
+    "electron_port": 3000,
+    "env": "development"
   }
 }

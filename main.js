@@ -3,7 +3,7 @@ const {app, BrowserWindow, ipcMain} = require('electron')
 const windowStateKeeper = require('electron-window-state')
 const readItem = require('./readItem')
 
-
+console.log('Readit - Main process');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
@@ -17,7 +17,7 @@ ipcMain.on('new-item', (e, itemUrl) => {
     e.sender.send('new-item-success', item);
   });
 
-});
+}); 
 
 // Create a new BrowserWindow when `app` is ready
 function createWindow () {
@@ -31,9 +31,7 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     x: state.x, y: state.y,
     width: state.width, height: state.height,
-    width: 1000, height: 800,
     minWidth: 350, minHeight: 300,
-    maxWidth: 650,
     webPreferences: {
       contextIsolation: false,
       nodeIntegration: true
