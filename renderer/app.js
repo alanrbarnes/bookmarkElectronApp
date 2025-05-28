@@ -9,6 +9,36 @@ let addItem = document.getElementById("add-item");
 let itemUrl = document.getElementById("url");
 let search = document.getElementById("search");
 
+////////////////////////////////////////////////
+//New 
+//////////////////////////////////////////////
+//Open modal from menu
+ipcRenderer.on('menu-show-modal', () => {
+    showModal.click();
+});
+//Open selected item from menu
+ipcRenderer.on('menu-open-item', () => {
+    items.open();
+});
+//Delete selected item from menu
+ipcRenderer.on('menu-delete-item', () => {
+    let selectedItem = items.getSelectedItem();
+    items.delete(selectedItem.index);
+});
+//Open selected item in browser from menu
+ipcRenderer.on('menu-open-item-native', () => {
+    let selectedItem = items.getSelectedItem();
+    items.openNative(selectedItem.index);
+});
+//Focus search input from menu
+ipcRenderer.on('menu-focus-search', () => {
+    search.focus();
+});
+
+////////////////////////////////////////////////
+//End New 
+//////////////////////////////////////////////
+
 //Filter items with "search"
 search.addEventListener('keyup', e => {
     //Loop items

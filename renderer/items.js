@@ -1,5 +1,6 @@
 //Modules
 const fs = require('fs');
+const {shell} = require('electron');
 
 //Dom nodes
 let items = document.getElementById("items");
@@ -16,10 +17,6 @@ fs.readFile(`${__dirname}/reader.js`, 'utf8', (err, data) => {
 
 ///Track items in storage
 exports.storage = JSON.parse(localStorage.getItem('readit-items')) || [];
-
-////////////////////////////////////////
-//New
-/////////////////////////////////////////
 
 //Listen for "done" message from reader window
 window.addEventListener('message', e => {
@@ -80,11 +77,6 @@ exports.getSelectedItem = () => {
     };
 }
 
-////////////////////////////////////////
-//End New
-/////////////////////////////////////////
-
-
 //persist storage
 exports.save = () => {
     localStorage.setItem('readit-items', JSON.stringify(this.storage));
@@ -116,6 +108,31 @@ exports.changeSelection = direction => {
         currentItem.node.nextElementSibling.classList.add('selected');
     }
 }
+
+///////////////////////////////////////////////////////////
+//NEW
+///////////////////////////////////////////////////////////
+//Open selected item in native Browser window
+exports.openNative = () => {
+        //Only if we have items (in case of menu open)
+    if ( !this.storage.length ) {
+        return;
+    }   
+
+    //Get selected item
+    // let selectedItem = document.getElementsByClassName('read-item selected')[0];
+    let selectedItem = this.getSelectedItem();
+
+    //Get items url
+    let contentURL = selectedItem.node.dataset.url
+
+    shell.openExternal(contentURL);
+    console.log('Opening item: ', contentURL);
+}
+///////////////////////////////////////////////////////////
+//End NEW
+///////////////////////////////////////////////////////////
+
 
 exports.open = () => {
 
